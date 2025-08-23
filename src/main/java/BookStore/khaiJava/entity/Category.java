@@ -1,9 +1,7 @@
 package BookStore.khaiJava.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
@@ -12,14 +10,20 @@ import java.util.Set;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "Categories")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     String categoryName;
     String description;
+    @Builder.Default
     boolean isActive = true;
     LocalDateTime createdAt;
+
+
 
     @PrePersist
     protected void onCreate() {

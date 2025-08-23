@@ -5,9 +5,10 @@ import lombok.Setter;
 
 
 public enum ErrorCode {
-    ROLE_NOT_EXISTED(3636, "role khong ton tai"),
-    USER_NOT_EXISTED(3637, "user not existed"),
-    USER_EXISTED(5000, "user already existed"),
+    ROLE_NOT_EXISTED(999, "role khong ton tai"),
+    USER_NOT_EXISTED(1001, "user not existed"),
+    USER_EXISTED(1002, "user already existed"),
+    CATEGORY_NOT_EXISTED(1003, "category not existed"),
     ;
 
 

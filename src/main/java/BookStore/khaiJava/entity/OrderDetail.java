@@ -14,9 +14,6 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int orderDetailId;
 
-    int orderId;
-
-    int bookId;
 
     int quantity;
 
