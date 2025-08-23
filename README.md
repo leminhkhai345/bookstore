@@ -119,6 +119,6 @@ This project is licensed under the MIT License.
 
 👨‍💻 Author
 Minh Khai
-📧 Email: your-email@example.com
-🌐 GitHub: your-username
+📧 Email: khaile.03042005@gmail.c
+🌐 GitHub: leminhkhai345
 
