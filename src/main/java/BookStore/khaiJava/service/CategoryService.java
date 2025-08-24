@@ -31,5 +31,7 @@ public class CategoryService {
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 
-
+    public void deleteCategory(int categoryId){
+        categoryRepository.deleteById(categoryId);
+    }
 }
