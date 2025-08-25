@@ -13,4 +13,8 @@ public enum Status {
     shipped,
     delivered,
     cancelled
+
+    ;
+    private String status;
+    private String message;
 }

@@ -23,7 +23,13 @@ public class Author {
     LocalDateTime updateAt;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
+        createAt = LocalDateTime.now();
+        updateAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
         createAt = LocalDateTime.now();
     }
 }
