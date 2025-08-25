@@ -27,7 +27,7 @@ public class CategoryController {
 
     }
 
-    @PostMapping("/categoryId")
+    @PostMapping("/{categoryId}")
     public ApiResponse<?> updateCategory(@PathVariable int categoryId, @RequestBody CategoryRequest request) {
         CategoryResponse categoryResponse = categoryService.updateCategory(categoryId, request);
         return ApiResponse.builder()
@@ -41,6 +41,35 @@ public class CategoryController {
         categoryService.deleteCategory(categoryId);
         return ApiResponse.builder()
                 .message("delete category successfully")
+                .build();
+    }
+
+    @PostMapping("/active/{categoryId}")
+    public ApiResponse<?> activateCategory(@PathVariable int categoryId, @RequestParam boolean active) {
+        String message;
+        if (active) {
+            message = "activate category successfully";
+        }
+        else message = "deactivate category successfully";
+        return ApiResponse.builder()
+                .message(message)
+                .data(categoryService.activeCategory(categoryId, active))
+                .build();
+    }
+
+    @GetMapping("/{categoryId}")
+    public ApiResponse<?> getCategory(@PathVariable int categoryId) {
+        return ApiResponse.builder()
+                .message("get category with id = " + categoryId + " successfully")
+                .data(categoryService.getCategory(categoryId))
+                .build();
+    }
+
+    @GetMapping("/")
+    public ApiResponse<?> getAllCategories() {
+        return ApiResponse.builder()
+                .message("get all categories successfully")
+                .data(categoryService.getAllCategories())
                 .build();
     }
 

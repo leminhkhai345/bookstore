@@ -13,12 +13,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class CategoryService {
     CategoryRepository categoryRepository;
     CategoryMapper categoryMapper;
+
 
     public CategoryResponse addCategory(CategoryRequest request){
         Category category = categoryMapper.toCategory(request);
@@ -33,5 +36,21 @@ public class CategoryService {
 
     public void deleteCategory(int categoryId){
         categoryRepository.deleteById(categoryId);
+    }
+
+    public CategoryResponse activeCategory(int categoryId, boolean active){
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
+        category.setActive(active);
+        return categoryMapper.toCategoryResponse(categoryRepository.save(category));
+    }
+
+    public CategoryResponse getCategory(int categoryId){
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() ->new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
+        return categoryMapper.toCategoryResponse(category);
+    }
+
+    public List<CategoryResponse> getAllCategories(){
+        List<Category>  categories = categoryRepository.findAll();
+        return categories.stream().map(categoryMapper::toCategoryResponse).toList();
     }
 }
