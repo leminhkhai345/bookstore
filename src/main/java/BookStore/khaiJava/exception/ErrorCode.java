@@ -9,6 +9,7 @@ public enum ErrorCode {
     USER_NOT_EXISTED(1001, "user not existed"),
     USER_EXISTED(1002, "user already existed"),
     CATEGORY_NOT_EXISTED(1003, "category not existed"),
+    AUTHOR_NOT_EXISTED(1004, "author not existed"),
     ;
 
 

@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/author")
@@ -28,5 +25,24 @@ public class AuthorController {
                 .data(authorService.createAuthor(authorRequest))
                 .build();
     }
+
+    @PostMapping("/{authorId}")
+    public ApiResponse<?> updateAuthor(@PathVariable int authorId, @RequestBody AuthorRequest authorRequest) {
+        return ApiResponse.builder()
+                .message("Author created successfully")
+                .data(authorService.updateAuthor(authorId, authorRequest))
+                .build();
+    }
+
+    @DeleteMapping("/{authorId}")
+    public ApiResponse<?> deleteAuthor(@PathVariable int authorId){
+        authorService.deleteAuthor(authorId);
+        return ApiResponse.builder()
+                .message("Author deleted successfully")
+                .build();
+    }
+
+
+
 
 }
