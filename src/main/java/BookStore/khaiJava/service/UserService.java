@@ -14,6 +14,8 @@ import BookStore.khaiJava.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class UserService {
     RoleRepository roleRepository;
     UserMapper userMapper;
     RoleMapper roleMapper;
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserResponse addUser(UserRequest userRequest) {
         User user = userMapper.toUser(userRequest);
@@ -38,6 +41,7 @@ public class UserService {
         roles.add(role);
 
         user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
@@ -48,6 +52,7 @@ public class UserService {
     public UserResponse updateUser(int userId, UserRequest userRequest) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         userMapper.toMapper(user, userRequest);
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         return userMapper.toUserResponse(userRepository.save(user));
     }
 
