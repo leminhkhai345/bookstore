@@ -34,6 +34,13 @@ public class UserService {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserResponse addUser(UserRequest userRequest) {
+
+        if(userRepository.existsByEmail(userRequest.getEmail())){
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
+        }
+        if(userRepository.existsByUsername(userRequest.getUsername())){
+            throw new AppException(ErrorCode.USERNAME_EXISTED);
+        }
         User user = userMapper.toUser(userRequest);
         Set<Role> roles = new HashSet<>();
         Role role = roleRepository.findById(userRequest.getRoleId())
