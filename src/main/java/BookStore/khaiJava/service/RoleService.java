@@ -3,6 +3,8 @@ package BookStore.khaiJava.service;
 import BookStore.khaiJava.dto.request.RoleRequest;
 import BookStore.khaiJava.dto.response.RoleResponse;
 import BookStore.khaiJava.entity.Role;
+import BookStore.khaiJava.exception.AppException;
+import BookStore.khaiJava.exception.ErrorCode;
 import BookStore.khaiJava.mapper.RoleMapper;
 import BookStore.khaiJava.repository.RoleRepository;
 import lombok.AccessLevel;
@@ -22,6 +24,9 @@ public class RoleService {
     RoleMapper roleMapper;
 
     public RoleResponse createRole(RoleRequest roleRequest){
+        if(roleRepository.existsByRoleName(roleRequest.getRoleName())){
+            throw new AppException(ErrorCode.ROLE_EXISTED);
+        }
         Role role = roleMapper.toRole(roleRequest);
         return roleMapper.toRoleResponse(roleRepository.save(role));
     }
@@ -31,16 +36,14 @@ public class RoleService {
     }
 
     public RoleResponse updateRole(int roleId, RoleRequest roleRequest){
-        Role role = roleRepository.findById(roleId).orElse(null);
-        if(role != null){
-            role.setRoleName(roleRequest.getRoleName());
-            role.setDescription(roleRequest.getDescription());
-        }
+        Role role = roleRepository.findById(roleId).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
+        role.setRoleName(roleRequest.getRoleName());
+        role.setDescription(roleRequest.getDescription());
         return roleMapper.toRoleResponse(roleRepository.save(role));
     }
 
     public RoleResponse getRole(int roleId){
-        Role role = roleRepository.findById(roleId).orElseThrow(() -> new RuntimeException("role " + roleId + "not existed"));
+        Role role = roleRepository.findById(roleId).orElseThrow(() -> new AppException(ErrorCode.ROLE_NOT_EXISTED));
         return roleMapper.toRoleResponse(role);
     }
 
