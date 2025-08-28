@@ -14,5 +14,6 @@ import lombok.experimental.FieldDefaults;
 public class RoleRequest {
     @NotBlank(message = "roleName must be not blank")
     String roleName;
+
     String description;
 }
