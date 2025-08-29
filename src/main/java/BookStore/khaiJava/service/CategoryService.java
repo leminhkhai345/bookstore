@@ -8,7 +8,6 @@ import BookStore.khaiJava.exception.ErrorCode;
 import BookStore.khaiJava.mapper.CategoryMapper;
 import BookStore.khaiJava.repository.CategoryRepository;
 import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,9 @@ public class CategoryService {
 
 
     public CategoryResponse addCategory(CategoryRequest request){
+        if(categoryRepository.existsByCategoryName(request.getCategoryName())){
+            throw new AppException(ErrorCode.CATEGORY_EXISTED);
+        }
         Category category = categoryMapper.toCategory(request);
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }

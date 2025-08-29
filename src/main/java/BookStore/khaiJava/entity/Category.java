@@ -19,11 +19,8 @@ public class Category {
     int id;
     String categoryName;
     String description;
-    @Builder.Default
-    boolean isActive = true;
+    boolean isActive;
     LocalDateTime createdAt;
-
-
 
     @PrePersist
     protected void onCreate() {

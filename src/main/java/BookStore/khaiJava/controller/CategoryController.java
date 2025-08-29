@@ -5,6 +5,7 @@ import BookStore.khaiJava.dto.response.ApiResponse;
 import BookStore.khaiJava.dto.response.CategoryResponse;
 import BookStore.khaiJava.service.CategoryService;
 import BookStore.khaiJava.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,7 +20,7 @@ public class CategoryController {
     private final UserService userService;
 
     @PostMapping("/")
-    public ApiResponse<?> createCategory(@RequestBody CategoryRequest request) {
+    public ApiResponse<?> createCategory(@RequestBody @Valid CategoryRequest request) {
         return ApiResponse.builder()
                 .message("add category successfully")
                 .data(categoryService.addCategory(request))
@@ -28,7 +29,7 @@ public class CategoryController {
     }
 
     @PostMapping("/{categoryId}")
-    public ApiResponse<?> updateCategory(@PathVariable int categoryId, @RequestBody CategoryRequest request) {
+    public ApiResponse<?> updateCategory(@PathVariable int categoryId, @RequestBody @Valid CategoryRequest request) {
         CategoryResponse categoryResponse = categoryService.updateCategory(categoryId, request);
         return ApiResponse.builder()
                 .message("update category successfully")
@@ -51,9 +52,10 @@ public class CategoryController {
             message = "activate category successfully";
         }
         else message = "deactivate category successfully";
+        var data = categoryService.activeCategory(categoryId, active);
         return ApiResponse.builder()
                 .message(message)
-                .data(categoryService.activeCategory(categoryId, active))
+                .data(data)
                 .build();
     }
 

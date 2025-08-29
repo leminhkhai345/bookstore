@@ -5,6 +5,7 @@ import BookStore.khaiJava.dto.request.RoleRequest;
 import BookStore.khaiJava.dto.response.ApiResponse;
 import BookStore.khaiJava.dto.response.RoleResponse;
 import BookStore.khaiJava.service.RoleService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,7 +20,7 @@ public class RoleContronller {
     RoleService roleService;
 
     @PostMapping("/")
-    public ApiResponse<RoleResponse> createRole(@RequestBody RoleRequest request){
+    public ApiResponse<RoleResponse> createRole(@RequestBody @Valid RoleRequest request){
         return ApiResponse.<RoleResponse>builder()
                 .message("create role successfully!")
                 .data(roleService.createRole(request))
