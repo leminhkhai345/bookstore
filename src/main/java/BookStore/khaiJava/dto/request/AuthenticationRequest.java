@@ -1,5 +1,6 @@
 package BookStore.khaiJava.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -8,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 public class AuthenticationRequest {
+    @NotBlank(message = "username must be not blank")
     String username;
+    @NotBlank(message = "password must be not blank")
     String password;
 }
