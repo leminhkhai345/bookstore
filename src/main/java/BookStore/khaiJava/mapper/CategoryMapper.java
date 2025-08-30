@@ -9,5 +9,14 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
     Category toCategory(CategoryRequest request);
-    CategoryResponse toCategoryResponse(Category category);
+    default CategoryResponse toCategoryResponse(Category category){
+        if(category == null) return null;
+        return CategoryResponse.builder()
+                .id(category.getId())
+                .categoryName(category.getCategoryName())
+                .description(category.getDescription())
+                .isActive(category.isActive())
+                .createdAt(category.getCreatedAt())
+                .build();
+    }
 }
