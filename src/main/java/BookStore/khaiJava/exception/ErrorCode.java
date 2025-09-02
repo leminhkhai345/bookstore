@@ -14,6 +14,7 @@ public enum ErrorCode {
     EMAIL_EXISTED(1006, "email already existed"),
     USERNAME_EXISTED(1007, "username already existed"),
     ROLE_EXISTED(1008, "role already existed"),
+    UNAUTHORIZED(1009, "unauthorized"),
     ;
 
 
