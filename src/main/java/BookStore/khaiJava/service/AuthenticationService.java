@@ -15,7 +15,9 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,11 +29,13 @@ import java.util.Date;
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
+
 @Slf4j
 public class AuthenticationService {
     UserRepository userRepository;
-    protected static final String SIGNER_KEY =
-            "APyvl/p0LevS5ETyEfzn6AUcZ6RgCBVHIvijde4hnSrZ3s9bVx02k9pl6f1zsppi";
+    @NonFinal
+    @Value("${jwt.signerKey}")
+    protected String SIGNER_KEY;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
         User user = userRepository.findByUsername(request.getUsername())
@@ -57,7 +61,7 @@ public class AuthenticationService {
                 .issuer("BookStore")
                 .issueTime(new Date())
                 .expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()))
-                .claim("customClaim", "custom")
+                .claim("customClaim", "custom") 
                 .build();
 
         Payload payload = new Payload(claimsSet.toJSONObject());
