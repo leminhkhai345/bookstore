@@ -1,17 +1,18 @@
 package BookStore.khaiJava.service;
 
 import BookStore.khaiJava.dto.request.AuthenticationRequest;
+import BookStore.khaiJava.dto.request.IntrospectRequest;
 import BookStore.khaiJava.dto.response.AuthenticationResponse;
+import BookStore.khaiJava.dto.response.IntrospectResponse;
 import BookStore.khaiJava.entity.User;
 import BookStore.khaiJava.exception.AppException;
 import BookStore.khaiJava.exception.ErrorCode;
 import BookStore.khaiJava.repository.UserRepository;
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
+import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -75,5 +77,21 @@ public class AuthenticationService {
         }
 
     }
+
+    public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
+        var token = request.getToken();
+        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+        SignedJWT signedJWT = SignedJWT.parse(token);
+
+        Date experirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+        var verified = signedJWT.verify(verifier);
+
+        return IntrospectResponse.builder()
+                .valid(verified && experirationTime.after(new Date()))
+                .build();
+    }
+
+
 
 }
